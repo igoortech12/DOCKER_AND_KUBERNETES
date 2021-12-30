@@ -18,9 +18,19 @@ docker container run --name meuContainer hello-world
 ---CRIAR CONTAINER E ACESSAR-LO DE FORMA INTERATIVA---
 docker container run -it ubuntu /bin/bash
 
+---CRIAR E RODAR CONTAINER EM BACKGROUND---
+docker container run -d --name <NOME_DO_SEU_CONTAINER> <IMAGEM>
+docker container run -d --name meuContainer ubuntu
+
+---VISUALIZAR CONTAINER EM EXECUÇÃO---
+docker ps
+
+---ACESSAR CONTAINER EM EXECUÇÃO---
+docker attach <ID_DO_CONTAINER>
+
+---ALGUNS COMANDOS DENTRO DO UBUNTU---
 apt-get update --yes (ATUALIZA SISTEMA UBUNTU)
 apt-get install curl --yes (INSTALA CURL DO SISTEMA)
-
 
 ---DELETAR CONTAINER PELO NOME--
 docker container rm NOME_DO_CONTAINER
@@ -43,7 +53,7 @@ docker container rm -f ID_DO_CONTAINER
 	FROM ubuntu
 	RUN apt-get update
 	RUN apt-get install curl --yes
-5.docker image build -t ubuntu-curl .
+5.docker image build -t <NOME_DA_IMAGEM> .
 
 ---LISTAR IMAGENS SALVA LOCAL---
 docker image ls
