@@ -13,4 +13,19 @@ RUN apt-get update
 RUM apt-get install git --yes
 
 ---DETAILS INSTRUCTION OF THE DOCKERFILE---
-FROM: Initial point
+FROM: Initial point. Select your image for workflow.
+Example: FROM ubuntu; FROM nginx; FROM node
+
+RUN: Execute from process of mount image.
+
+WORKDIR:
+
+CMD:
+
+EXPOSE:
+
+COPY and ADD:
+
+VOLUME:
+
+USER:
