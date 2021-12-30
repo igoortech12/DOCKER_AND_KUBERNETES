@@ -1,0 +1,180 @@
+DOCKER
+    - O QUE O DOCKER?
+        A tecnologia Docker usa o kernel Linux e recursos do kernel, como Cgroups e namespaces , para separar
+    processos para que possam ser executados de forma independente. Essa independência é a intenção dos 
+    contêineres - a capacidade de executar vários processos e aplicativos separadamente para fazer melhor uso de 
+    sua infraestrutura, mantendo a segurança que você teria com sistemas separados.
+    
+    - FUNCIONAMENTO
+        DOCKER CLIENT
+            Responsável pelos comandos. Por exemplo: PULL, PUSH, BUILD, RUN...
+
+        DOCKER HOST
+            Máquina onde o processo acontece. É no Docker Host onde são salva as imagens que serão utilizadas para
+        a criação dos containers. Para isso, o Docker Deamon é o intermediador do Docker Cliente e Docker Hub. 
+        Também o apontado das imagens para os containers.
+
+        DOCKER HUB
+            Servidor que hospeda as imagens. É nele que são salvos as imagens e suas diversas versões.
+
+    - DOCKERFILE
+        O QUE É?
+            O Dockerfile é uma recurso que torna ágio a criação de imagens. É a partir desse arquivo que o comando
+        docker build é utilizada. Para para sua utilização, é necessário seguir uma série de comandos chave para
+        um correto funcionamento.
+
+        COMANDOS NO DOCKERFILE
+            FROM - Inicializa o build de uma imagem a partir de uma imagem base
+            RUN - Executa um comando
+            LABEL - Adiciona metadados a imagem
+            CMD - Define o comando e/ou os parâmetros padrão
+            EXPOSE - Define que o container precisa expor a porta em questão
+            ENV - Define variáveis de ambiente
+            ADD - Copia arquivos ou diretórios ou arquivos remotos e adiciona ao sistema de arquivos da imagem
+            COPY - Copia arquivos ou diretórios e adiciona ao sistema de arquivos da imagem
+            ENTRYPOINT - Ajuda vocÊ a configurar um container que pode ser executado com executável
+            VOLUME - Define volumes que devem ser definidos
+            WORKDIR - Define o seu diretório corrente
+
+CONTAINER
+    - O QUE É?
+        Containers é a capacidade de executar vários processos e aplicativos separadamente para fazer melhor uso de 
+    sua infraestrutura, mantendo a segurança que você teria com sistemas separados. 
+
+    - COMO FUNCIONA?
+        Devido ao uso reduzido dos recursos utilizados pelas imagens dos containers, a utilização de recursos
+    físicos também são reduzidos. 
+        A forma de comunicação é via CLI. Que a Interface de Linha de Comando. Com isso, é uma das formas de 
+    redução de recursos computacionais.
+
+    - VANTAGENS
+        MODULARIDADE
+            A abordagem do Docker para a conteinerização se concentra na capacidade de desativar uma parte de um 
+        aplicativo para atualizar ou reparar, sem ter que desativar o aplicativo inteiro.
+        
+        CAMADAS E CONTROLE DE VERSÃO DE IMAGEM
+            Cada arquivo de imagem do Docker é composto de uma série de camadas que são combinadas em uma única 
+        imagem. Uma camada é criada quando a imagem muda. Cada vez que um usuário especifica um comando, como 
+        executar ou copiar , uma nova camada é criada.
+
+        ROLLBACK
+            Talvez a melhor parte das camadas seja a capacidade de reverter. Cada imagem possui camadas. Não gosta 
+        da iteração atual de uma imagem? Reverta para a versão anterior. Isso oferece suporte a uma abordagem de 
+        desenvolvimento ágil e ajuda a tornar a integração e implantação contínuas (CI / CD) uma realidade do 
+        ponto de vista das ferramentas.
+
+KUBERNETES (https://kubernetes.io/docs/home/)
+    - O QUE É?
+        É o gerenciamento de cargas de trabalho e serviços em contêineres, que facilita a configuração declarativa 
+    e a automação.
+
+    - VANTAGENS
+        Descoberta de serviço e balanceamento de carga O Kubernetes pode expor um contêiner usando o nome DNS ou seu 
+    próprio endereço IP. Se o tráfego para um contêiner for alto, o Kubernetes será capaz de balancear a carga e 
+    distribuir o tráfego de rede para que a implantação seja estável. (BALANCEAR CARGA DE TRABALHO)
+        Orquestração de armazenamento O Kubernetes permite montar automaticamente um sistema de armazenamento de sua escolha, 
+    como armazenamentos locais, provedores de nuvem pública e muito mais. (GERENCIAR)
+        Implementações e reversões automatizadas Você pode descrever o estado desejado para seus contêineres implantados usando 
+    o Kubernetes, e ele pode alterar o estado real para o estado desejado em uma taxa controlada. Por exemplo, você pode 
+    automatizar o Kubernetes para criar novos contêineres para sua implantação, remover os contêineres existentes e adotar 
+    todos os seus recursos para o novo contêiner. (AUTOMATIZAÇAO, IMPLEMENTAÇÃO E REVERSÕES)
+        Empacotamento automático de lixo Você fornece ao Kubernetes um cluster de nós que pode ser usado para executar tarefas 
+    em contêineres. Você diz ao Kubernetes de quanta CPU e memória (RAM) cada contêiner precisa. O Kubernetes pode encaixar 
+    contêineres em seus nós para fazer o melhor uso de seus recursos.
+        O Kubernetes de autocorreção reinicia os contêineres que falham, substitui os contêineres, elimina os contêineres que não 
+    respondem à verificação de integridade definida pelo usuário e não os anuncia aos clientes até que estejam prontos para servir. 
+    (REINICIALIZAÇÃO AUTOMÁTICA)
+        Gerenciamento de segredo e configuração O Kubernetes permite armazenar e gerenciar informações confidenciais, como senhas, 
+    tokens OAuth e chaves SSH. Você pode implantar e atualizar segredos e configuração de aplicativo sem reconstruir suas imagens 
+    de contêiner e sem expor segredos em sua configuração de pilha. (UTILIZAÇÃO E SENHA DE SEGURANÇA)
+
+    - COMO FUNCIONA?
+        Ao implantar o Kubernetes, você obtém um cluster.
+        Um cluster Kubernetes consiste em um conjunto de máquinas de trabalho, chamadas nós, que executam aplicativos em contêineres. 
+    Cada cluster tem pelo menos um nó de trabalho.O (s) nó (s) de trabalho hospedam o Pods que são os componentes da carga de 
+    trabalho do aplicativo. O control plane gerencia os nós de trabalho e os pods no cluster. Em ambientes de produção, o control
+    plane geralmente é executado em vários computadores e um cluster geralmente executa vários nós, fornecendo tolerância a 
+    falhas e alta disponibilidade.
+
+        CONTROL PLANE
+            Gerencia o NODES e orquestra o CLUSTER.
+	        OBS: É seguro e necessário ter mais de um CONTROL PLANE por CLUSTER. Dessa forma,
+	    em caso de falha, o CLUSTER é resguardado por outro CONTROL PLANE.
+
+            - CONTROLLER MANAGER
+                Executa e gerencia todos os controladores do Kubernetes. Elemento que administra as tomadas de decisoes do Kubernetes, 
+            como: autenticações,autoriZações e admissões.
+
+            - CLOUD CONTROLLER MANAGER
+
+            - API SERVER
+                Responsavel por receber todo comunicação do CLUSTER.
+
+            - ETCD
+                Banco de chave valor, que armazenda dados do Kubernetes. OBS: Seu acesso é feito pelo Api Server.
+
+            - SCHEDULER
+                Organizar onde cada processo será executado. Analisa as	especificaçõese verifica quais NODES satisfaz a demanda. 
+                E define em	qual vai executar.
+
+        NODES
+            Vai executar os containers das aplicações. Executa toda a carga.
+
+            - KUBELET
+                Atua como agente de insperção e execução dos containers no node. É ele que monitora e executa os containers e interagem com 
+            o Kube Api Server para reportar os status.
+
+            - KUBE-PROXY
+                Responsavel pela comunicação de rede com o CLUSTER.
+
+            - CONTAINER RUNTIME (CRI)
+                Especificações necessários para que o containers Runtime seja utilizado dentro do Kubernetes para executar os containers.
+
+    - PODs
+        POD
+            É um conjunto de namespaces Linux, cgroups e potencialmente outras facetas de isolamento - as mesmas coisas que isolam um 
+        contêiner Docker. Dentro do contexto de um pod, os aplicativos individuais podem ter outros subisolamentos aplicados.
+
+        REPLICASET
+            O objetivo de um ReplicaSet é manter um conjunto estável de pods de réplica em execução a qualquer momento. Como tal, costuma 
+        ser usado para garantir a disponibilidade de um número especificado de pods idênticos.
+
+        DEPLOYMENT
+            Fornece atualizações declarativas para Pods e ReplicaSets.
+            Você descreve um estado desejado em uma implantação, e a implantaçãoControladoraltera o estado real para o estado desejado em 
+        uma taxa controlada. Você pode definir implantações para criar novos ReplicaSets ou remover implantações existentes e adotar 
+        todos os seus recursos com novas implantações.
+
+        SERVICE
+            E uma abstração que define um conjunto lógico de pods e uma política pela qual acessá-los. O conjunto de pods direcionados por 
+        um serviço geralmente é determinado por um seletor.
+
+        ARQUIVO DE MANIFESTO
+            Um arquivo de manifesto do Kubernetes compreende instruções em um arquivo yaml ou json que especificam como implantar um aplicativo 
+        no nó ou nos nós em um cluster do Kubernetes. As instruções incluem informações sobre a implantação do Kubernetes, o serviço Kubernetes 
+        e outros objetos do Kubernetes a serem criados no cluster. O manifesto também é conhecido como uma especificação de pod ou como um 
+        arquivo deployment.yaml (embora outros nomes de arquivos sejam permitidos).
+
+    - PIPELINE CI/CD
+        É o processo de desenvolvimento e implantação e/ou atualização de uma aplicação.
+        O processo se inicia na análise dos novos códigos gerados pela equipe de desenvolvimento. Quando digo analisada, me refiro ao processo
+    de desenvolvimento, teste e aprovação para o repositório. O primeiro procedimento é o não conflito
+    nos códigos gerado. Para isso, uma primeira determinação é a definicção do IDE que todos irão usar, assim sendo é essencial.
+    Esse processo é conhecida como CI, que significa integração contínua.
+        O próximo passo da pipeline é a entrega contínua (CD). Que é a entrega dos códigos já testados ao reposítório de forma rápida e fácil.
+        Por fim, podemos nomear como implantação contínua todo o processo de Pipeline CI/CD. É aqui que são lançados os códigos para a produção.
+        Todas essas práticas de CI/CD relacionadas diminuem o risco da implantação de aplicações, facilitando o lançamento das mudanças em 
+    pequenas partes, e não de uma só vez.
+    
+    - NGINX
+        O que é?
+            É um software de servidor web que trabalha com HTTP, proxy reverso, balanceador de cargas, e proxy de e-mail POP3, IMAP e SMTP.
+            Sua arquitetura é baseada no fluxo de tarefas.
+        Como funciona?
+            Seu funcionamente utiliza um algorítimo que que trata conexões sem bloqueio.
+            O processo de trabalho é tratar milhares de conexões em um mecanismo de loop, assim verificando coninuamente as conexões até que uma 
+        seja utilizada. 
+
+AWS (AMAZON WEB SERVICES)
+    - O QUE É?
+    - TIPOS DE SERVIÇOS.
