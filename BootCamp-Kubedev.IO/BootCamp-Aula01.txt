@@ -1,0 +1,85 @@
+AULA 01 - CONTAINER E DOCKER SIMPLIFICADO
+
+CONTAINER
+- UNIFORMIDADE
+- ISOLAR PROCESSOS EM UM AMBIENTE
+
+---CRIAR CONTAINER BAIXANDO UMA IMAGEM---
+docker container run hello-world
+
+---VISUALIZAR CONTAINERS/LISTAR CONTAINER---
+docker container ls (LISTA OS CONTAINERS QUE ESTÃO ATIVOS)
+docker container ls -a (LISTA TODOS OS CONTAINERS)
+
+---CRIAR E DAR NOME AO UM CONTAINER BAIXADO DE UMA IMAGEM---
+docker container run --name NOME_DO_CONTAINER NOME_DA_IMAGEM
+docker container run --name meuContainer hello-world
+
+---CRIAR CONTAINER E ACESSAR-LO DE FORMA INTERATIVA---
+docker container run -it ubuntu /bin/bash
+
+apt-get update --yes (ATUALIZA SISTEMA UBUNTU)
+apt-get install curl --yes (INSTALA CURL DO SISTEMA)
+
+
+---DELETAR CONTAINER PELO NOME--
+docker container rm NOME_DO_CONTAINER
+
+---DELETAR CONTAINER PELO ID---
+docker container rm ID_DO_CONTAINER
+
+---PARAR UM CONTAINER EM EXECUTÇÃO---
+docker container stop ID_DO_CONTAINER
+
+---DELETAR CONTAINER QUE ESTÁ EM EXECUÇÃO---
+docker container rm -f ID_DO_CONTAINER
+
+---CRIAR IMAGEM DO UBUNTU---
+1.mkdir NOME-DA-PASTA (CRIA PASTA)
+2.cd NOME-DA-PASTA(ENTRA NA PASTA)
+3. code .(ABRE O VCSCODE) (ABRE O VSCODE NA PASTA CRIADA)
+4.DENTRO DO VSCODE, CRIA-SE UM ARQUIVO CHAMADO Dockerfile
+4.1Dentro do Dockerfile escreve-se:
+	FROM ubuntu
+	RUN apt-get update
+	RUN apt-get install curl --yes
+5.docker image build -t ubuntu-curl .
+
+---LISTAR IMAGENS SALVA LOCAL---
+docker image ls
+
+---VISUALIZAR CONSTRUÇÃO DE UMA IMAGEM---
+docker image history NOME-DA-IMAGEM
+
+---SALVAR IMAGEM NO DOCKER HUB---
+1.criar conta no hub.docker.com
+2.docker login
+3.criar imagem
+	docker image build -t NOME-DA-CONTA-NO-DOCKERHUB/NOME-DA-IMAGEM:VERSÃO .
+	docker image build -t igoortech/ubuntu-curl-vim:v1 .
+4.upload (UPAR) imagem no Docker Hub
+	docker push igoortech/ubuntu-curl-vim:v1 .
+	
+---SALVAR NOVA VERSÃO NO DOCKER HUB---
+1.criar nova versão
+	docker tag NOME-DA-CONTA-NO-DOCKERHUB/NOME-DA-IMAGEM:VERSÃO NOME-DA-CONTA-NO-DOCKERHUB/NOME-DA-IMAGEM:VERSÃO
+	docker tag igoortech/ubuntu-curl-vim:v1 igoortech/ubuntu-curl-vim:latest
+2.upar nova versão
+	docker push igoortech/ubuntu-curl-vim:latest
+	
+---REPOSITORIO IMAGENS---
+www.hub.docker.com
+
+---COMANDO PARA O DOCKERFILE---
+FROM - Inicializa o build de uma imagem a partir de uma imagem base
+RUN - Executa um comando
+LABEL - Adiciona metadados a imagem
+CMD - Define o comando e/ou os parâmetros padrão
+EXPOSE - Define que o container precisa expor a porta em questão
+ENV - Define variáveis de ambiente
+ADD - Copia arquivos ou diretórios ou arquivos remotos e adiciona ao sistema de arquivos da imagem
+COPY - Copia arquivos ou diretórios e adiciona ao sistema de arquivos da imagem
+ENTRYPOINT - Ajuda vocÊ a configurar um container que pode ser executado com executável
+VOLUME - Define volumes que devem ser definidos
+WORKDIR - Define o seu diretório corrente
+

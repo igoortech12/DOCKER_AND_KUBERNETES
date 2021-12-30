@@ -1,0 +1,17 @@
+Para instalar ou atualizar eksctlno Windows usando Chocolatey
+
+Se você ainda não instalou o Chocolatey em seu sistema Windows, consulte Instalando o Chocolatey.
+
+Instale ou atualize eksctl .
+
+Instale os binários com o seguinte comando:
+
+choco install -y eksctl 
+
+Se já estiverem instalados, execute o seguinte comando para atualizar:
+
+choco upgrade -y eksctl 
+
+Teste se sua instalação foi bem-sucedida com o seguinte comando.
+
+eksctl version

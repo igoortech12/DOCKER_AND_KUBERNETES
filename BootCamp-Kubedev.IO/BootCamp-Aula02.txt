@@ -1,0 +1,268 @@
+AULA 2 - DESVENDANDO O KUBERNETES
+
+Docker  NÃO resolve escalabilidade e resiliência.
+
+KUBERNETES gerencia os containers.
+
+KUBERNETES é formado por um conjunto de máquinas (CLUSTER)
+
+KUBERNETES NODES:
+	Vai executar os containers das aplicações. Executa toda a carga.
+	
+		Kubelet - Atua como agente de insperção e execução dos containers no node.
+		É ele que monitora e executa os containers e interegem com o  Kube Api Server
+		para reportar os status.
+		
+		Kube Proxy - Responsavel pela comunicação de rede com o CLUSTER.
+		
+		Container Runtime (CRI) - Especificações necessários para que o containers Runtime
+		seja utilizado dentro do Kubernetes para executar os containers. 
+	
+KUBERNETES CONTROL PLANE:
+	Gerencia o NODES e orquestra o CLUSTER.
+	OBS: É seguro e necessário ter mais de um CONTROL PLANE por CLUSTER. Dessa forma,
+	em caso de falha, o CLUSTER é resguardado por outro CONTROL PLANE.
+	
+	COMPONENTES QUE GERENCIAM O CLUSTER
+		Kube Api Server - Responsavel por receber todo comunicação do CLUSTER.
+	
+		ETCD - Banco de chave valor, que armazenda dados do Kubernetes.
+			OBS: Seu acesso é feito pelo Kube Api Server.
+	
+		Kube Scheduler - Organizar onde cada processo será executado. Analisa as
+		especificaçõese verifica quais NODES satisfaz a demanda. E define em
+		qual vai executar.
+	
+		Kube Controller Manager - Executa e gerencia todos os controladores do Kubernetes.
+		Elemento que administra as tomadas de decisoes do Kubernetes, como: autenticações, 
+		autorirações e admissões. 
+		
+		
+		
+---K3D---
+WINDOWS
+	Instalação a partir do Chocolatey.org/install
+	INSTALAÇÃO:
+		1.Abrir PowerShell como administrador;
+		2.Remover restrição do PowerShall
+			"Com o PowerShell, você deve garantir que Get-ExecutionPolicy não seja 
+			restrito. Sugerimos usar Bypasspara ignorar a política para instalar as 
+			coisas ou AllSignedpara um pouco mais de segurança."
+			2.1No PowerShell digite Get-ExecutionPolicy
+				Irá retornar Restricted
+			2.2Ainda no PowerShall, digite Set-ExecutionPolicy AllSigned
+		3.Instalando o Chocolatey cole o comando no PowerShall
+			Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+		4.Se não hover nenhum erro, execute o comando choco no PowerShall.
+		5.Checar UPGRAGE do Chocolatey
+			No PowerShall digite choco upgrade chocolatey
+			OBS.: Retornará Chocolatey upgraded 0/1 packages.
+		6.Instalando K3D
+			No PowerShall cole choco install k3d
+		7.Se não houver nenhum erro, execute o comando k3d no PowerShall.
+			
+---KUBECTL---
+WINDOWS
+	Instalação a partir do Chocolatey.
+	INSTALAÇÃO:
+	1.Instalar Chocolatey.org/install
+	2.Já como o K3D devidamente instalado,
+	Acessar https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
+	3.Abra o PowerShall e digite choco install kubernetes-cli
+		OBS:Na confirmação escolha A como resposta.
+		OBS2:Ao fim da instalação retornará uma mensagem 
+			Chocolatey installed 1/1 packages.
+	4.Para testar a instalação usamos o comando kubectl version --client
+	
+---CRIAR CLUSTER-KUBERNETES-K3D---
+k3d cluster create NOME-DO-CLUSTER
+k3d cluster create meuprimeirocluster
+
+--VER OS NÓS NO CLUSTER-KUBERNETES---
+kuberctl get nodes
+
+--CRIAR CLUSTER-KUBERNETES SEM LOADBALANCER---
+k3d cluster create NOME-DO-CLUSTER --no-lb
+
+---LISTAR CLUSTER-KUBERNETES CRIADOS---
+k3d cluster list
+
+---DELETAR CLUSTER-KUBERNETES---
+k3d cluster delete NOME-DO-CLUSTER
+
+---CRIAR CLUSTER-KUBERNETES COM SERVERS E AGENTS---
+k3d cluster create NOME-DO-CLUSTER --servers NUMERO-DE-SERVERS --agents NUMERO-DE-AGENTS
+k3d cluster create meucluster --servers 3 --agents 3
+
+---LISTAR DETALHES DO KUBECTL---
+kubectl api-resources
+
+------------------------------------------------------------------------------------------------------------------------------------------
+CRIAÇÃO DE POD
+
+---CRIAR MANIFESTO DO POD---
+1. No VSCode crie um arquivo com extensão .yaml
+2. No arquivo escreva:
+	apiVersion: //GRUPO DE RECURSO 
+	kind: //OBJETO
+	metadata:
+		name:
+	spec: //ESPECIFICAÇÃO
+		containers:
+			- name: //NOME QUALQUER
+			  image: //IMAGEM NO DOCKER HUB
+			  ports: //PORTA
+				- containerPort: 
+3. Conferir os nós
+kubectl get nodes
+4. Criar objeto no cluster
+kubectl create -f LOCAL-DO-MANIFESTO
+
+---PODs CRIADOS---
+kubectl get pods
+
+---MOSTRAR DETALHES DO POD---
+kubectl describe pod NOME-DO-POD
+
+---DEFINIR PORTA DE COMUNICAÇÃO COM O POD CRIADO---
+kubectl port-forward pod/NOME-DO-POD PORTA-LOCAL:PORTA-DO-POD
+kubectl port-forward pod/meupod 8080:80
+
+---DELETANDO POD---
+kubectl delete NOME-DO-POD
+
+---CRIAR MANIFESTO DO POD COM LABEL---
+1. No VSCode crie um arquivo com extensão .yaml
+2. No arquivo escreva:
+	apiVersion: //GRUPO DE RECURSO 
+	kind: //OBJETO
+	metadata:
+		name:
+		labels:
+			app: //NOME QUALQUER
+	spec: //ESPECIFICAÇÃO
+		containers:
+			- name: //NOME QUALQUER
+			  image: //IMAGEM NO DOCKER HUB
+			  ports: //PORTA
+			  	- containerPort: 
+3. Conferir os nós
+kubectl get nodes
+4. Criar objeto no cluster
+kubectl create -f LOCAL-DO-MANIFESTO
+
+---OBSERVAR POD CRIADO POR FLAG LABEL---
+kubectl get pods -l app=NOME-DA-LABEL
+
+--------------------------------------------------------------------------------
+
+---CRIANDO POD REPLICASET---
+apiVersion: 
+kind: ReplicaSet
+metadata:
+  name: meureplicaset
+spec:
+  replicas: //NUMERO DE REPLICAS	
+  selector:
+    matchLabels:
+      app: 
+  template:
+    metadata:
+      labels:
+        app:
+    spec:
+      containers:
+      	- name: 
+      	  image: 
+      	  ports:
+        	- containerPort:
+
+---ATUALIZANDO POD---
+kubectl apply -f NOME-DO-MANIFESTO
+
+--ALTERAR NÚMERO DE REPLICAS VIA COMANDO---
+kubectl scale replicaset NOME-DO-MANIFESTO --replicas NUMERO-DE-REPLICAS
+kubectl scale replicaset meureplicaset --replicas 20
+
+---------------------------------------------------------------------------------------
+
+---DEPLOY EFICIENTE NO KUBERNETES---
+POD - EXECUTA OS CONTAINERS
+REPLICASET - CONTROLADO, GERENCIANDO A ESCALABILIDADE E RESILIENCIA DO POD, ATRÁS DO GERENCIAMENTO DE REPLICAS. 
+DEPLOYMENT - GERENCIA A TROCA DE VERSÃO. MECANISMO DE ATUALIZAÇÃO DA APLICAÇÃO.
+
+--------------------------------------------------------------------------------------------------
+
+---CRIANDO POD DEPLOYMENT---
+apiVersion: 
+kind: Deployment
+metadata:
+  name: meudeployment
+spec:
+  replicas: //NUMERO DE REPLICAS	
+  selector:
+    matchLabels:
+      app: 
+  template:
+    metadata:
+      labels:
+        app:
+    spec:
+      containers:
+      	- name: 
+      	  image: 
+      	  ports:
+        	- containerPort:
+
+---ATUALIZANDO POD---
+kubectl apply -f NOME-DO-MANIFESTO
+
+---DEPLOYMENT CRIADOS---
+kubectl get pods
+
+---MOSTRAR DETALHES DO DEPLOYMENT---
+kubectl describe deployment NOME-DO-DEPLOYMENT
+
+---DEFINIR PORTA DE COMUNICAÇÃO COM O DEPLOYMENT CRIADO---
+kubectl port-forward deployment/NOME-DO-DEPLOYMENT PORTA-LOCAL:PORTA-DO-POD
+kubectl port-forward deployment/meudeployment 8080:80
+
+---DELETANDO DEPLOYMENT---
+kubectl delete NOME-DO-DEPLOYMENT
+
+---MUDAR VERSAO ANTERIOR DEPLOYMENT---
+kubectl rollout undo deployment NOME-DO-MANIFESTO
+kubectl rollout undo deployment meudeployment
+
+-----------------------------------------------------------------------------------------------------
+
+---SERVICES DISCOVERY---
+COM ENDEREÇAMENTO DOS SERVIÇOS LISTADO, O SERVICE RECEBE A REQUISIÇÃO
+DE ACESSO DE UM ALGUM SERVIÇO QUE ESTEJA LISTADO E RETORNA O ENDEREÇO DA RÉPLICA.
+
+TIPOS:
+	CLUSTER AP: MOSTRA UM POD DE FORMA INTERNA. COMUNICAÇÃO EM CLUSTERS.
+	LONGPORT: ACESSO DE FORMA EXTERNA. ACESSO MEDIANTE IP QUE FAÇA PARTE DO CLUSTER KUBERNETES. RANGER DE PORTA: 30000 A 3276747
+	LOADBALANCER: SERVIÇO DE NUVEM.
+
+---------------------------------------------------------------------------------------------------
+
+---CRIANDO SERVICE---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app:  nginx
+  ports:
+    - port: 80
+	  nodePort: 30000
+  type: NodePort
+
+--------------------------------------------------------------------------------------
+
+---CRIAR CLUSTER COM BIND DA PORTA LOCAL COM A PORTA DO CONTAINER---
+BIND COM A PORTA LOADBALANCER
+
+k3d cluster create --agents 3 --servers 3 -p "8080:3000@loadbalancer"

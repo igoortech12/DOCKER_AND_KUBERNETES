@@ -1,0 +1,21 @@
+AULA 3 - COMO GERAR VALOR EM UMA ENTREGA COM PIPELINE CI/CD
+
+PIPELINE 
+É UMA SEQUÊNCIA DE ETAPAS DE EXECUÇÃO. (IDEIA DE ESTEIRA)
+
+CI - INTEGRAÇÃO CONTÍNUA
+SE PRECISAR COMITAR UM CÓDIGO NUMA BRANCH, INCORPORAR NA SOLUÇÃO É
+O QUE ACONTECE A PIPELINE CI.
+
+CD - ENTREGA CONTÍNUA
+
+COMPONENTES PARA CRIAÇÃO DE PIPELINE - GITHUB ACTIONS
+1. WOrkflow: Jobs e Eventos que disparam o workflow.
+2. Ivent: Estimulos ou ações que disparam o workflow. Request, push na brench
+3. Jobs: Sequencia de passos que executa o workflow. for for sequencia ou paralelo.
+4. Steps: Execuções de comando executados em shell, powersehll ou actions que são executadas dentro do job. Compartilham dados entre si.
+5. Actions: Instruções executadas através de blocos de configurações.
+6. Runners: Agentes de execução dos jobs.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
