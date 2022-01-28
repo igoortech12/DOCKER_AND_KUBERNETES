@@ -5,22 +5,47 @@ Windows:
 
 Linux:
     Docker Engine
-    Mnikube
+    Minikube https://minikube.sigs.k8s.io/docs/start/
+    Driver minikube (caso precise) https://minikube.sigs.k8s.io/docs/drivers/none/
 
 CAPÍTULO 2 - PRIMEIROS PASSOS COM KUBERNETES
 Clonando repositório
     git clone git@github.com:cloudnativedevops/demo.git
+    
 Acessando diretório clonado 
     cd demo
+
 Executando primeiro container
     docker container run -p 9999:8888 --name hello cloudnatived/demo:hello
+
 Acessando diretório hello
     cd hello
+
 Visualizando arquivo de criação de imagem Dockerfile
     vi Dockerfile
+
 Criando imagem a partir do Dockerfile
     docker image build -t myhello .
+
 Listar todos os container já criados
-docker container ls -a
+    docker container ls -a
+
 Executar container myhello - criado com Dockerfile
-docker container run -p 9999:8888 myhello
+    docker container run -p 9999:8888 myhello
+
+Executar container com porta definida
+    docker container -p PORTA_DO_HOST:PORTA_DO_CONTAINER ...
+
+Conectando ao Docker Hub
+    docker login
+
+Criando nome para imagem
+    docker image tag myhello igoorech/myhello
+
+Enviar imagem preparada
+    docker image push igoorech/myhello
+
+Executando imagem envia para Docker Hub
+    docker container run --name myhello_dockerhub igoortech/myhello -p 9999:8888
+
+Excutar aplicação demo Kubernetes 
