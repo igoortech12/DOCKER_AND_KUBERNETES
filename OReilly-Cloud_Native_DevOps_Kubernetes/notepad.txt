@@ -1,0 +1,26 @@
+Instalando Docker
+
+Windows:
+    Docker Desktop
+
+Linux:
+    Docker Engine
+    Mnikube
+
+CAPÍTULO 2 - PRIMEIROS PASSOS COM KUBERNETES
+Clonando repositório
+    git clone git@github.com:cloudnativedevops/demo.git
+Acessando diretório clonado 
+    cd demo
+Executando primeiro container
+    docker container run -p 9999:8888 --name hello cloudnatived/demo:hello
+Acessando diretório hello
+    cd hello
+Visualizando arquivo de criação de imagem Dockerfile
+    vi Dockerfile
+Criando imagem a partir do Dockerfile
+    docker image build -t myhello .
+Listar todos os container já criados
+docker container ls -a
+Executar container myhello - criado com Dockerfile
+docker container run -p 9999:8888 myhello
