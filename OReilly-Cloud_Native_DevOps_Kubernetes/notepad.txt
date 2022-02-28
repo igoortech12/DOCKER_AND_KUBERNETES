@@ -49,3 +49,4 @@ Executando imagem envia para Docker Hub
     docker container run --name myhello_dockerhub igoortech/myhello -p 9999:8888
 
 Excutar aplicação demo Kubernetes 
+    kubectl run demo --image igoortech/myhello --port=9999 --labels app=demo

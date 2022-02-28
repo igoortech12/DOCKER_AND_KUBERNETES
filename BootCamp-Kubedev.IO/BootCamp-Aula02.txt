@@ -79,7 +79,7 @@ k3d cluster create NOME-DO-CLUSTER
 k3d cluster create meuprimeirocluster
 
 --VER OS NÓS NO CLUSTER-KUBERNETES---
-kuberctl get nodes
+kubectl get nodes
 
 --CRIAR CLUSTER-KUBERNETES SEM LOADBALANCER---
 k3d cluster create NOME-DO-CLUSTER --no-lb
