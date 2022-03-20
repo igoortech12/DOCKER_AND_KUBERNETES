@@ -57,4 +57,84 @@ Instalar Kubectl (Ubuntu)
     sudo apt-get install -y kubectl
 
 Excutar aplicação demo Kubernetes 
-    
+    kubectl run demo --image=igoortech/hello --port=9999 --labels app=demo
+
+Criando novos exemplos de deploy
+    kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.4
+    kubectl expose deployment hello-minikube --type=NodePort --port=8080
+
+Observando dos os recursos do Kubernetes 
+    kubectl get all
+
+Deletando POD (Se tiver ReplicaSet o POD será reconstruído após sua exclusão)
+    kubectl delete pod <NOME_DO_POD>
+    kubectl delete pod hello-minikube
+
+Deletando todo serviço
+    kubectl delete replicaset <NOME-DO-REPLICASET>
+    kubectl delete deployment <NOME-DO-DEPLOYMENT>
+
+MANIFESTO (YAML)
+Exemplo de MANIFESTO (TIPO: DEPLOYMENT)
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+    name: demo
+    labels:
+        app: demo
+    spec:
+    replicas: 1
+    selector:
+        matchLabels:
+        app: demo
+    template:
+        metadata:
+        labels:
+            app: demo
+        spec:
+        containers:
+            - name: demo
+            image: cloudnatived/demo:hello
+            ports:
+            - containerPort: 8888
+
+Aplicando um manifesto YAML (DEPLOYMENT)
+    kubectl apply -f <NOME-DO-MANIFESTO.yaml>
+
+Observando manifesto criado 
+    kubectl get all
+
+Exemplo de MANIFESTO (TIPO: SERVICE)
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: demo
+      labels:
+        app: demo
+    spec:
+    # NOTE: depending on which version of the book you have, this may say port 9999. The latest version of the book uses 8888 to match the pod.
+      ports:
+      - port: 8888
+        protocol: TCP
+        targetPort: 8888
+      selector: #Informa como rotear requisições para Pods específicos. 
+        app: demo
+    type: ClusterIP
+
+Aplicando um manifesto YAML (SERVICE)
+    kubectl apply -f <NOME-DO-MANIFESTO.yaml>
+
+Observando serviços do Kubernetes 
+    kubectl get services
+
+Conectar porta LOCALHOST à porta do SERVICE 
+    kubectl port-forward <SERVICE/NOME-DO-SERVIÇO> 9999:<PORTA-DO-SERVIÇO>
+
+HELM: GERENCIADOR DE PACOTES
+Instalando HELM
+    https://helm.sh/docs/intro/install/
+
+Instalando manisfesto Helm
+    helm install <NOME-DA-APLICAÇÃO> <LOCAL-D0-MANIFESTO>
+    helm install demo ./k8s/demo 
+
