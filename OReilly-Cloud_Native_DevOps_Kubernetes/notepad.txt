@@ -138,3 +138,70 @@ Instalando manisfesto Helm
     helm install <NOME-DA-APLICAÇÃO> <LOCAL-D0-MANIFESTO>
     helm install demo ./k8s/demo 
 
+---------------------------------------------------------------------------------------
+GERENCIANDO RECURSOS - EXEMPLOS DE MANIFESTOS
+    RECURSO SOLICITADO (RESOURCE REQUEST)
+        spec:
+          containers:
+          - name: demo
+          image: cloudnatived/demo:hello
+          ports:
+          - containerPort: 8888
+          resources:
+            requests:
+              memory: "10Mi"
+              cpu: "100m"
+    
+    LIMITE DE RECURSO (RESOURCE LIMIT)
+        spec:
+          containers:
+          - name: demo
+          image: cloudnatived/demo:hello
+          ports:
+          - containerPort: 8888
+          resources:
+            limits:
+              memory: "20Mi"
+              cpu: "250M"
+
+    QUOTA DE RECURSOS (LIMITANDO PODS EM UM DETERMINADO NAMESPACE)
+        LISTAR NAMESPACE
+            kubectl get namespace
+        
+        EXEMPLO DE MANISFESTO 
+            apiVersion: v1
+            kind: ResourceQuota
+            metadata:
+              name: demo-resourcequota 
+            spec:
+              hard:
+                pods: "100"
+
+        VERIFICAR SE O RESOURCEQUOTA ESTÁ ATIVO 
+            kubectl get resourcequota -n demo
+-----------------------------------------------------------------------------------------
+GERENCIANDO CICLO DE VIDA - EXEMPLOS 
+    LIVENESS PROBES (VERIFICA SE O POD ESTÁ ATIVO) - SERVIDOR HTTP 
+        livenessProbe:
+          httpGet:
+            path: /helthz
+            port: 8888
+          initialDelaySeconds: 3
+          periodSeconds: 3
+    
+    LIVENESS PROBES (VERIFICA SE O POD ESTÁ ATIVO) - SERVIDOR HTTP TCPSOCKET 
+        livenessProbe:
+          tcpSocket:
+            path: /helthz
+            port: 8888
+          initialDelaySeconds: 3
+          periodSeconds: 3
+
+    READNESS PROBES (VERIFICA SE O POD ESTÁ PRONTO) - SERVIDOR HTTP
+        livenessProbe:
+          httpGet:
+            path: /helthz
+            port: 8888
+          initialDelaySeconds: 3
+          periodSeconds: 3
+------------------------------------------------------------------------------------------
